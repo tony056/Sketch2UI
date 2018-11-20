@@ -6,8 +6,13 @@ import collections
 
 # result {
 #     'classes_per_image': N,
-#     'images_per_class': N
+#     'images_per_class': N,
+#       ...
 # }
+
+def display_loading(count, base, file_num):
+    if count % base == 0:
+        print('{0}/{1}'.format(count, file_num))
 
 def parse_json_files(path):
     com_table = collections.defaultdict(list)
@@ -22,8 +27,7 @@ def parse_json_files(path):
     count = 0
     for filename in files:
         count += 1
-        if count % base == 0:
-            print('{0}/{1}'.format(count, file_num))
+        display_loading(count, base, file_num)
         if not filename.endswith('.json'):
             continue
         index = filename.split('.')[0]
@@ -37,11 +41,11 @@ def parse_json_files(path):
             components = data['children']
             for component in components:
                 label = component['componentLabel']
-                com_table[label].append(index)
+                com_table[label].append(int(index))
                 file_table[index].append(label)
     return file_table, com_table
 
-def write_result_to_file(name, file_table, com_table):
+def write_result_to_file(name, file_table, com_table, optional=False):
     print('writing the result........')
     file_num = len(file_table.keys())
     com_num = len(com_table.keys())
@@ -59,10 +63,13 @@ def write_result_to_file(name, file_table, com_table):
         'components_per_image': components_per_image,
         'classes_per_image': classes_per_image,
         'images_per_class': images_per_class,
-        'component_table': com_table,
     }
+    if optional:
+        result['component_table'] = com_table
+        # add additional data into the result
+
     with open(name + '.json', 'w') as output_file:
-        json.dump(result, output_file)
+        json.dump(result, output_file, sort_keys=True, indent=4, separators=(',', ': '))
 
 def main():
     REPORT_NAME = 'dataset_analysis'
