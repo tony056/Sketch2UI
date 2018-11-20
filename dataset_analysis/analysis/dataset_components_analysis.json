@@ -1,0 +1,127 @@
+{
+    "Advertisement": {
+        "number_of_components": 12692,
+        "number_of_components_per_file": 1.0301111922733543,
+        "number_of_files_per_component": 12321
+    },
+    "Background Image": {
+        "number_of_components": 7108,
+        "number_of_components_per_file": 1.1667760998030203,
+        "number_of_files_per_component": 6092
+    },
+    "Bottom Navigation": {
+        "number_of_components": 538,
+        "number_of_components_per_file": 1.0803212851405624,
+        "number_of_files_per_component": 498
+    },
+    "Button Bar": {
+        "number_of_components": 133,
+        "number_of_components_per_file": 1.0,
+        "number_of_files_per_component": 133
+    },
+    "Card": {
+        "number_of_components": 12480,
+        "number_of_components_per_file": 3.011583011583012,
+        "number_of_files_per_component": 4144
+    },
+    "Checkbox": {
+        "number_of_components": 401,
+        "number_of_components_per_file": 3.15748031496063,
+        "number_of_files_per_component": 127
+    },
+    "Date Picker": {
+        "number_of_components": 90,
+        "number_of_components_per_file": 1.0344827586206897,
+        "number_of_files_per_component": 87
+    },
+    "Drawer": {
+        "number_of_components": 7294,
+        "number_of_components_per_file": 1.0,
+        "number_of_files_per_component": 7294
+    },
+    "Icon": {
+        "number_of_components": 60117,
+        "number_of_components_per_file": 2.391288782816229,
+        "number_of_files_per_component": 25140
+    },
+    "Image": {
+        "number_of_components": 96453,
+        "number_of_components_per_file": 3.1157088865200118,
+        "number_of_files_per_component": 30957
+    },
+    "Input": {
+        "number_of_components": 16704,
+        "number_of_components_per_file": 2.0363281726197733,
+        "number_of_files_per_component": 8203
+    },
+    "List Item": {
+        "number_of_components": 121537,
+        "number_of_components_per_file": 5.61268125981343,
+        "number_of_files_per_component": 21654
+    },
+    "Map View": {
+        "number_of_components": 1113,
+        "number_of_components_per_file": 1.0671140939597314,
+        "number_of_files_per_component": 1043
+    },
+    "Modal": {
+        "number_of_components": 4272,
+        "number_of_components_per_file": 1.0,
+        "number_of_files_per_component": 4272
+    },
+    "Multi-Tab": {
+        "number_of_components": 4247,
+        "number_of_components_per_file": 1.0102283539486203,
+        "number_of_files_per_component": 4204
+    },
+    "Number Stepper": {
+        "number_of_components": 108,
+        "number_of_components_per_file": 1.894736842105263,
+        "number_of_files_per_component": 57
+    },
+    "On/Off Switch": {
+        "number_of_components": 1370,
+        "number_of_components_per_file": 1.4699570815450644,
+        "number_of_files_per_component": 932
+    },
+    "Pager Indicator": {
+        "number_of_components": 3346,
+        "number_of_components_per_file": 1.0874228144296392,
+        "number_of_files_per_component": 3077
+    },
+    "Radio Button": {
+        "number_of_components": 4946,
+        "number_of_components_per_file": 3.792944785276074,
+        "number_of_files_per_component": 1304
+    },
+    "Slider": {
+        "number_of_components": 1693,
+        "number_of_components_per_file": 1.4347457627118645,
+        "number_of_files_per_component": 1180
+    },
+    "Text": {
+        "number_of_components": 159773,
+        "number_of_components_per_file": 3.9725751510480123,
+        "number_of_files_per_component": 40219
+    },
+    "Text Button": {
+        "number_of_components": 88684,
+        "number_of_components_per_file": 2.97228273620002,
+        "number_of_files_per_component": 29837
+    },
+    "Toolbar": {
+        "number_of_components": 37637,
+        "number_of_components_per_file": 1.0234398368456832,
+        "number_of_files_per_component": 36775
+    },
+    "Video": {
+        "number_of_components": 528,
+        "number_of_components_per_file": 1.0455445544554456,
+        "number_of_files_per_component": 505
+    },
+    "Web View": {
+        "number_of_components": 9462,
+        "number_of_components_per_file": 1.0271385149804602,
+        "number_of_files_per_component": 9212
+    }
+}

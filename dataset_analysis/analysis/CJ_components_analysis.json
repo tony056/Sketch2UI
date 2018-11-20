@@ -1,0 +1,47 @@
+{
+    "Button": {
+        "number_of_components": 88684,
+        "number_of_components_per_file": 2.97228273620002,
+        "number_of_files_per_component": 29837
+    },
+    "CheckBox": {
+        "number_of_components": 401,
+        "number_of_components_per_file": 3.15748031496063,
+        "number_of_files_per_component": 127
+    },
+    "Icon": {
+        "number_of_components": 60117,
+        "number_of_components_per_file": 2.391288782816229,
+        "number_of_files_per_component": 25140
+    },
+    "Images": {
+        "number_of_components": 114664,
+        "number_of_components_per_file": 2.8383583345710184,
+        "number_of_files_per_component": 40398
+    },
+    "Input": {
+        "number_of_components": 16704,
+        "number_of_components_per_file": 2.0363281726197733,
+        "number_of_files_per_component": 8203
+    },
+    "Pager Indicator": {
+        "number_of_components": 3346,
+        "number_of_components_per_file": 1.0874228144296392,
+        "number_of_files_per_component": 3077
+    },
+    "Radio Button": {
+        "number_of_components": 6316,
+        "number_of_components_per_file": 2.848894903022102,
+        "number_of_files_per_component": 2217
+    },
+    "Slider": {
+        "number_of_components": 1693,
+        "number_of_components_per_file": 1.4347457627118645,
+        "number_of_files_per_component": 1180
+    },
+    "Text": {
+        "number_of_components": 159773,
+        "number_of_components_per_file": 3.9725751510480123,
+        "number_of_files_per_component": 40219
+    }
+}
