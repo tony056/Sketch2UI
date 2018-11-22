@@ -16,7 +16,6 @@ export default class SketchingContainer extends React.Component {
       redoPoints: [],
       paths: [],
       canvas: null,
-      context: null,
       isPainting: false,
     };
   }
@@ -30,19 +29,18 @@ export default class SketchingContainer extends React.Component {
   }
 
   undoCanvas() {
-    console.log('undo');
-    const { paths } = this.state;
+    const { paths, redoPoints } = this.state;
     if (paths.length === 0) return;
     const buffer = paths.pop();
-    this.setState({ paths, redoPoints: buffer });
+    redoPoints.push(buffer);
+    this.setState({ paths, redoPoints });
   }
 
   redoCanvas() {
-    console.log('redo');
-    const { redoPoints, currPoints } = this.state;
+    const { redoPoints, paths } = this.state;
     if (!redoPoints || redoPoints.length === 0) return;
-    const newPoints = currPoints.concat(redoPoints);
-    this.setState({ currPoints: newPoints, redoPoints: [] });
+    paths.push(redoPoints.pop());
+    this.setState({ paths, redoPoints });
   }
 
   saveCanvas() {
