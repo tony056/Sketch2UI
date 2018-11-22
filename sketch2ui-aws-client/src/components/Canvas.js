@@ -1,5 +1,6 @@
 /* global document */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 
 class Canvas extends Component {
@@ -13,6 +14,7 @@ class Canvas extends Component {
     this.pointerDown = this.pointerDown.bind(this);
     this.pointerMove = this.pointerMove.bind(this);
     this.getTouchPointOnCanvas = this.getTouchPointOnCanvas.bind(this);
+    this.redrawAll = this.redrawAll.bind(this);
     this.isPainting = false;
     this.userStrokeStyle = '#EE92C2';
     this.prevData = { offsetX: 0, offsetY: 0 };
@@ -29,6 +31,14 @@ class Canvas extends Component {
     this.line = [];
     this.targetElement = document.getElementById('canvas');
     disableBodyScroll(this.targetElement);
+  }
+
+  componentDidUpdate() {
+    if (!this.targetElement) {
+      return;
+    }
+    const { points } = this.props;
+    this.redrawAll(points);
   }
 
   componentWillUnmount() {
@@ -57,6 +67,8 @@ class Canvas extends Component {
   onPointerUp() {
     if (!this.isPainting) return;
     this.isPainting = false;
+    const { stop } = this.props;
+    stop();
   }
 
   onMouseDown({ nativeEvent }) {
@@ -73,14 +85,28 @@ class Canvas extends Component {
     };
   }
 
-  pointerMove(curPosData) {
-    const lineData = {
-      start: { ...this.prevData },
-      stop: { ...curPosData },
-    };
+  redrawAll(points) {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    const iterator = points.values();
+    for (let points of iterator) {
+      let prevData = null;
+      for (let point of points.values()) {
+        if (!prevData) prevData = point;
+        this.paint(prevData, point, this.userStrokeStyle);
+        prevData = point;
+      }
+    }
+  }
 
-    this.line = this.line.concat(lineData);
-    this.paint(this.prevData, curPosData, this.userStrokeStyle);
+  pointerMove(curPosData) {
+    // const lineData = {
+    //   start: { ...this.prevData },
+    //   stop: { ...curPosData },
+    // };
+    const { addPoint } = this.props;
+    addPoint(curPosData);
+    // this.line = this.line.concat(lineData);
+    // this.paint(this.prevData, curPosData, this.userStrokeStyle);
   }
 
   pointerDown({ offsetX, offsetY }) {
@@ -117,3 +143,15 @@ class Canvas extends Component {
   }
 }
 export default Canvas;
+
+Canvas.propTypes = {
+  points: PropTypes.array,
+  addPoint: PropTypes.func,
+  stop: PropTypes.func,
+};
+
+Canvas.defaultProps = {
+  points: [],
+  addPoint: () => {},
+  stop: () => {},
+};

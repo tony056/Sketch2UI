@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
-import NavBar from './containers/NavBar';
-import Canvas from './components/Canvas';
+import SketchingContainer from './containers/SketchingContainer';
 
 function App() {
   const styles = {
@@ -9,8 +8,7 @@ function App() {
   };
   return (
     <div className="App" style={styles}>
-      <NavBar />
-      <Canvas id="canvas" />
+      <SketchingContainer />
     </div>
   );
 }
