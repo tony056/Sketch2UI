@@ -1,6 +1,8 @@
 import React from 'react';
+import { Container, Box } from 'gestalt';
 import NavBar from './NavBar';
 import Canvas from '../components/Canvas';
+import TaskDisplay from '../components/TaskDisplay';
 
 export default class SketchingContainer extends React.Component {
   constructor(props) {
@@ -72,15 +74,18 @@ export default class SketchingContainer extends React.Component {
       }
     }
     return (
-      <div>
+      <Container>
         <NavBar
           onUndoClick={this.undoCanvas}
           onRedoClick={this.redoCanvas}
           onCleanClick={this.cleanCanvas}
           onSaveClick={this.saveCanvas}
         />
-        <Canvas addPoint={this.addPoint} points={totalPaths} stop={this.savePath} />
-      </div>
+        <Box column={12} display="flex" overflow="scroll">
+          <TaskDisplay isDebugging />
+          <Canvas addPoint={this.addPoint} points={totalPaths} stop={this.savePath} />
+        </Box>
+      </Container>
     );
   }
 }

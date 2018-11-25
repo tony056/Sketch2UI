@@ -1,4 +1,5 @@
 import React from 'react';
+import { Container } from 'gestalt';
 import './App.css';
 import SketchingContainer from './containers/SketchingContainer';
 
@@ -7,9 +8,9 @@ function App() {
     overflow: 'hidden',
   };
   return (
-    <div className="App" style={styles}>
+    <Container className="App" style={styles}>
       <SketchingContainer />
-    </div>
+    </Container>
   );
 }
 

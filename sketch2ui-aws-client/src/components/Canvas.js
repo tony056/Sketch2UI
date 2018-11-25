@@ -27,7 +27,7 @@ class Canvas extends Component {
     this.ctx = this.canvas.getContext('2d');
     this.ctx.lineJoin = 'round';
     this.ctx.lineCap = 'round';
-    this.ctx.lineWidth = 5;
+    this.ctx.lineWidth = 3;
     this.line = [];
     this.targetElement = document.getElementById('canvas');
     disableBodyScroll(this.targetElement);
