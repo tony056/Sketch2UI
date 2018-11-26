@@ -1,6 +1,7 @@
 /* global document */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Box } from 'gestalt';
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 
 class Canvas extends Component {
@@ -16,7 +17,7 @@ class Canvas extends Component {
     this.getTouchPointOnCanvas = this.getTouchPointOnCanvas.bind(this);
     this.redrawAll = this.redrawAll.bind(this);
     this.isPainting = false;
-    this.userStrokeStyle = '#EE92C2';
+    this.userStrokeStyle = '#000000';
     this.prevData = { offsetX: 0, offsetY: 0 };
     this.targetElement = null;
   }
@@ -128,17 +129,19 @@ class Canvas extends Component {
 
   render() {
     return (
-      <canvas
-        id="canvas"
-        ref={(ref) => { this.canvas = ref; }}
-        style={{ background: 'black' }}
-        onTouchStart={this.onTouchDown}
-        onTouchMove={this.onTouchMove}
-        onTouchEnd={this.onPointerUp}
-        onMouseDown={this.onMouseDown}
-        onMouseMove={this.onMouseMove}
-        onMouseUp={this.onPointerUp}
-      />
+      <Box padding={4} color="gray" shape="rounded">
+        <canvas
+          id="canvas"
+          ref={(ref) => { this.canvas = ref; }}
+          style={{ background: 'white' }}
+          onTouchStart={this.onTouchDown}
+          onTouchMove={this.onTouchMove}
+          onTouchEnd={this.onPointerUp}
+          onMouseDown={this.onMouseDown}
+          onMouseMove={this.onMouseMove}
+          onMouseUp={this.onPointerUp}
+        />
+      </Box>
     );
   }
 }

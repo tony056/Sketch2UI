@@ -1,8 +1,14 @@
+/* global document */
 import React from 'react';
-import { Container, Box } from 'gestalt';
+import {
+  Container, Box, Modal, Spinner,
+} from 'gestalt';
+import { Auth, API } from 'aws-amplify';
 import NavBar from './NavBar';
 import Canvas from '../components/Canvas';
 import TaskDisplay from '../components/TaskDisplay';
+import s3Upload from '../libs/aws-lib';
+import dataURItoBlob from '../libs/utils';
 
 export default class SketchingContainer extends React.Component {
   constructor(props) {
@@ -13,29 +19,36 @@ export default class SketchingContainer extends React.Component {
     this.saveCanvas = this.saveCanvas.bind(this);
     this.addPoint = this.addPoint.bind(this);
     this.savePath = this.savePath.bind(this);
+    this.handleAuthentication = this.handleAuthentication.bind(this);
+    this.handleItemChange = this.handleItemChange.bind(this);
     this.state = {
       currPoints: [],
       redoPoints: [],
       paths: [],
       canvas: null,
       isPainting: false,
+      isAuthenticated: false,
+      isLoading: false,
+      currentTask: '',
+      currentNumber: 0,
+      targetNumbers: {
+        Icon: 80,
+        'Pager-indicator': 20,
+        Slider: 20,
+      },
     };
   }
 
-  cleanCanvas() {
-    this.setState({
-      currPoints: [],
-      redoPoints: [],
-      paths: [],
-    });
-  }
-
-  undoCanvas() {
-    const { paths, redoPoints } = this.state;
-    if (paths.length === 0) return;
-    const buffer = paths.pop();
-    redoPoints.push(buffer);
-    this.setState({ paths, redoPoints });
+  async componentDidMount() {
+    try {
+      await Auth.currentSession();
+      this.setState({ isAuthenticated: true });
+    } catch (e) {
+      if (e !== 'No current user') {
+        console.log(e);
+      }
+      this.setState({ isAuthenticated: false });
+    }
   }
 
   redoCanvas() {
@@ -45,11 +58,24 @@ export default class SketchingContainer extends React.Component {
     this.setState({ paths, redoPoints });
   }
 
-  saveCanvas() {
-    console.log('save');
-    // const { canvas } = this.state;
-    // const data = canvas.toDataURL('image/jpeg');
-    // TODO:
+  async saveCanvas() {
+    // console.log('save');
+    const { canvas, currentTask } = this.state;
+    const data = canvas ? canvas.toDataURL('image/jpeg') : document.getElementById('canvas').toDataURL('image/jpeg');
+    const dataBlob = dataURItoBlob(data);
+    this.setState({ isLoading: true });
+    try {
+      const attachment = await s3Upload(dataBlob, currentTask);
+      API.post('notes', '/notes', {
+        body: {
+          attachment,
+          content: 'testing',
+        },
+      });
+    } catch (e) {
+      console.log(e.message);
+    }
+    this.setState({ isLoading: false });
   }
 
   addPoint(point) {
@@ -65,8 +91,46 @@ export default class SketchingContainer extends React.Component {
     this.setState({ currPoints: [], paths, isPainting: false });
   }
 
+  async handleAuthentication(email, password) {
+    try {
+      await Auth.signIn(email, password);
+      this.setState({ isAuthenticated: true });
+    } catch (e) {
+      console.log(e.message);
+    }
+  }
+
+  handleItemChange(value) {
+    this.setState({ currentTask: value });
+  }
+
+  undoCanvas() {
+    const { paths, redoPoints } = this.state;
+    if (paths.length === 0) return;
+    const buffer = paths.pop();
+    redoPoints.push(buffer);
+    this.setState({ paths, redoPoints });
+  }
+
+  cleanCanvas() {
+    this.setState({
+      currPoints: [],
+      redoPoints: [],
+      paths: [],
+    });
+  }
+
   render() {
-    const { paths, currPoints, isPainting } = this.state;
+    const {
+      paths,
+      currPoints,
+      isPainting,
+      isAuthenticated,
+      isLoading,
+      targetNumbers,
+      currentTask,
+      currentNumber,
+    } = this.state;
     const totalPaths = paths.slice();
     if (currPoints.length > 0) {
       if (isPainting) {
@@ -74,17 +138,36 @@ export default class SketchingContainer extends React.Component {
       }
     }
     return (
-      <Container>
-        <NavBar
-          onUndoClick={this.undoCanvas}
-          onRedoClick={this.redoCanvas}
-          onCleanClick={this.cleanCanvas}
-          onSaveClick={this.saveCanvas}
-        />
-        <Box column={12} display="flex" overflow="scroll">
-          <TaskDisplay isDebugging />
+      <Container overflow="scroll">
+        <Box>
+          <NavBar
+            onUndoClick={this.undoCanvas}
+            onRedoClick={this.redoCanvas}
+            onCleanClick={this.cleanCanvas}
+            onSaveClick={this.saveCanvas}
+            isAuthenticated={isAuthenticated}
+            handleAuthentication={this.handleAuthentication}
+            handleItemChange={this.handleItemChange}
+          />
+        </Box>
+        <Box column={12} display="flex">
+          <TaskDisplay
+            isDebugging
+            number={currentNumber}
+            targetNumber={targetNumbers[currentTask]}
+          />
           <Canvas addPoint={this.addPoint} points={totalPaths} stop={this.savePath} />
         </Box>
+        {isLoading && (
+          <Modal
+            accessibilityCloseLabel="close"
+            accessibilityModalLabel="Uploading the image"
+            heading="Uploading"
+            size="sm"
+          >
+            <Spinner show accessibilityLabel="Uploading" />
+          </Modal>
+        )}
       </Container>
     );
   }
