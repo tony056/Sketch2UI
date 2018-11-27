@@ -21,6 +21,7 @@ export default class SketchingContainer extends React.Component {
     this.savePath = this.savePath.bind(this);
     this.handleAuthentication = this.handleAuthentication.bind(this);
     this.handleItemChange = this.handleItemChange.bind(this);
+    this.updateItemCount = this.updateItemCount.bind(this);
     this.state = {
       currPoints: [],
       redoPoints: [],
@@ -29,7 +30,7 @@ export default class SketchingContainer extends React.Component {
       isPainting: false,
       isAuthenticated: false,
       isLoading: false,
-      currentTask: '',
+      currentTask: 'Icon',
       currentNumber: 0,
       targetNumbers: {
         Icon: 80,
@@ -49,6 +50,8 @@ export default class SketchingContainer extends React.Component {
       }
       this.setState({ isAuthenticated: false });
     }
+    const { currentTask } = this.state;
+    this.updateItemCount(currentTask);
   }
 
   redoCanvas() {
@@ -65,13 +68,16 @@ export default class SketchingContainer extends React.Component {
     const dataBlob = dataURItoBlob(data);
     this.setState({ isLoading: true });
     try {
-      const attachment = await s3Upload(dataBlob, currentTask);
+      const attachment = await s3Upload(dataBlob, currentTask.toLowerCase());
       API.post('notes', '/notes', {
         body: {
           attachment,
           content: 'testing',
         },
+      }).then(() => {
+        this.updateItemCount(currentTask);
       });
+      this.cleanCanvas();
     } catch (e) {
       console.log(e.message);
     }
@@ -101,7 +107,12 @@ export default class SketchingContainer extends React.Component {
   }
 
   handleItemChange(value) {
-    this.setState({ currentTask: value });
+    this.updateItemCount(value);
+  }
+
+  async updateItemCount(task) {
+    const { count } = await API.get('notes', `/notes/${task.toLowerCase()}`);
+    this.setState({ currentTask: task, currentNumber: count });
   }
 
   undoCanvas() {
