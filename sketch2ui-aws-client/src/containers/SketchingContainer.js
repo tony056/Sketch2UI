@@ -68,7 +68,7 @@ export default class SketchingContainer extends React.Component {
     const dataBlob = dataURItoBlob(data);
     this.setState({ isLoading: true });
     try {
-      const attachment = await s3Upload(dataBlob, currentTask.toLowerCase());
+      const attachment = await s3Upload(dataBlob, currentTask);
       API.post('notes', '/notes', {
         body: {
           attachment,
