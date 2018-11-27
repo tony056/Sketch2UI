@@ -46,7 +46,7 @@
 
 ### 1. Dataset Analysis
 #### Usage
-`python3 dataset_analysis.py [PATH_TO_DATASET_DIR] [REPORT_NAME](Optional)`
+`python3 dataset_analysis.py [PATH_TO_DATASET_DIR] [REPORT_NAME] [MAP_NAME](Optional)`
 
 #### Extend report content
 1. set *optional* => True for *write_result_to_file*

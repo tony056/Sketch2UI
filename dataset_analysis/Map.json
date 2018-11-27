@@ -1,0 +1,52 @@
+{
+    "CJ2Rico": {
+        "Button": [
+            "Text Button"
+        ],
+        "CheckBox": [
+            "Checkbox"
+        ],
+        "Icon": [
+            "Icon"
+        ],
+        "Images": [
+            "Background Image",
+            "Image",
+            "Web View",
+            "Video",
+            "Map View"
+        ],
+        "Input": [
+            "Input"
+        ],
+        "Pager Indicator": [
+            "Pager Indicator"
+        ],
+        "Radio Button": [
+            "Radio Button",
+            "On/Off Switch"
+        ],
+        "Slider": [
+            "Slider"
+        ],
+        "Text": [
+            "Text"
+        ]
+    },
+    "Rico2CJ": {
+        "Background Image": "Images",
+        "Checkbox": "CheckBox",
+        "Icon": "Icon",
+        "Image": "Images",
+        "Input": "Input",
+        "Map View": "Images",
+        "On/Off Switch": "Radio Button",
+        "Pager Indicator": "Pager Indicator",
+        "Radio Button": "Radio Button",
+        "Slider": "Slider",
+        "Text": "Text",
+        "Text Button": "Button",
+        "Video": "Images",
+        "Web View": "Images"
+    }
+}
