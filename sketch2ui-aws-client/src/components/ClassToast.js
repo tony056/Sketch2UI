@@ -16,7 +16,7 @@ class ClassToast extends Component {
     const { itemIndex } = this.state;
     const { handleItemChange } = this.props;
     return (
-      <Box column={6} paddingX={2}>
+      <Box column={6}>
         <SegmentedControl
           items={items}
           selectedItemIndex={itemIndex}

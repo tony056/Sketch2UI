@@ -15,6 +15,7 @@ class Canvas extends Component {
     this.pointerDown = this.pointerDown.bind(this);
     this.pointerMove = this.pointerMove.bind(this);
     this.getTouchPointOnCanvas = this.getTouchPointOnCanvas.bind(this);
+    this.recreateBG = this.recreateBG.bind(this);
     this.redrawAll = this.redrawAll.bind(this);
     this.isPainting = false;
     this.userStrokeStyle = '#000000';
@@ -23,16 +24,18 @@ class Canvas extends Component {
   }
 
   componentDidMount() {
-    this.canvas.width = 360;
-    this.canvas.height = 640;
+    this.canvas.width = 200;
+    this.canvas.height = 200;
     this.ctx = this.canvas.getContext('2d');
     this.ctx.lineJoin = 'round';
     this.ctx.lineCap = 'round';
     this.ctx.lineWidth = 3;
     this.line = [];
+    this.recreateBG();
     this.targetElement = document.getElementById('canvas');
     disableBodyScroll(this.targetElement);
   }
+
 
   componentDidUpdate() {
     if (!this.targetElement) {
@@ -86,8 +89,14 @@ class Canvas extends Component {
     };
   }
 
+  recreateBG() {
+    this.ctx.fillStyle = 'white';
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
   redrawAll(points) {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.recreateBG();
     const iterator = points.values();
     for (let points of iterator) {
       let prevData = null;
@@ -129,7 +138,7 @@ class Canvas extends Component {
 
   render() {
     return (
-      <Box padding={4} color="gray" shape="rounded">
+      <Box padding={2} color="gray" shape="rounded">
         <canvas
           id="canvas"
           ref={(ref) => { this.canvas = ref; }}

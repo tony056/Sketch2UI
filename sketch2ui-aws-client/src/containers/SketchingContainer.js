@@ -8,7 +8,7 @@ import NavBar from './NavBar';
 import Canvas from '../components/Canvas';
 import TaskDisplay from '../components/TaskDisplay';
 import s3Upload from '../libs/aws-lib';
-import dataURItoBlob from '../libs/utils';
+import { dataURItoBlob } from '../libs/utils';
 
 export default class SketchingContainer extends React.Component {
   constructor(props) {
@@ -161,11 +161,11 @@ export default class SketchingContainer extends React.Component {
             handleItemChange={this.handleItemChange}
           />
         </Box>
-        <Box column={12} display="flex">
+        <Box column={12} display="flex" alignItems="center" justifyContent="around" color="darkGray">
           <TaskDisplay
-            isDebugging
             number={currentNumber}
             targetNumber={targetNumbers[currentTask]}
+            task={currentTask}
           />
           <Canvas addPoint={this.addPoint} points={totalPaths} stop={this.savePath} />
         </Box>

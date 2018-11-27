@@ -57,7 +57,8 @@ export default class NavBar extends React.Component {
       <Box
         direction="row"
         color="red"
-        alignContent="center"
+        alignItems="center"
+        justifyContent="around"
         column={12}
         display="flex"
         flex="grow"
