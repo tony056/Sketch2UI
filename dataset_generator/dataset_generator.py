@@ -26,13 +26,13 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Data Generator')
     parser.add_argument('--ps', dest='ps',
                         help='data path to Rico dataset',
-                        default='/Users/khzeng/Desktop/semantic_annotations', type=str)
+                        default='/home/khzeng/exp/SK2UI/semantic_annotations', type=str)
     parser.add_argument('--pc', dest='pc',
                         help='data path to CJ dataset',
-                        default='/Users/khzeng/Desktop/CJ', type=str)
+                        default='/home/khzeng/exp/SK2UI/CJ', type=str)
     parser.add_argument('--po', dest='po',
                         help='data path to generated dataset',
-                        default='/Users/khzeng/Desktop/Output', type=str)
+                        default='/home/khzeng/exp/SK2UI/Output', type=str)
     parser.add_argument('--pm', dest='pm',
                         help='file path to map.json',
                         default='Map.json', type=str)
@@ -124,8 +124,16 @@ def generate_data(args, CJ_files_components):
         os.mkdir(args.po)
     components_label = collections.defaultdict(list)
     components_label['annotations'] = []
+    Pb_components_label = collections.defaultdict(list)
+    Pb_components_label['annotations'] = []
     cnt = 0
+    file_num = len(CJ_files_components.keys())
+    base = file_num // 10
+    count = 0
+    print('generating........')
     for filename, value in CJ_files_components.items():
+        count += 1
+        display_loading(count, base, file_num)
         components = value['CJ_label']
         classes = value['CJ_class']
         positions = value['bounds']
@@ -134,18 +142,25 @@ def generate_data(args, CJ_files_components):
             candidates = fnmatch.filter(os.listdir(args.pc + '/' + component + '/'), '*.jpg')
             position = positions[ii]
             comp_img = Image.open(args.pc + '/' + component + '/' + random.choice(candidates))
-            if (position[2]-1 - position[0]) * (position[3]-1 - position[1]) < 25:
-                # ignore the component that component's area less than 25
+            if ((position[2]-1 - position[0]) * (position[3]-1 - position[1]) < 25) or (position[2]-1 - position[0] < 5) or (position[3]-1 - position[1]) < 5:
+                # ignore the component that component's area less than 25 and width/height less than 5
                 continue
-            comp_img = np.array(comp_img.resize((position[2]-1 - position[0], position[3]-1 - position[1]), Image.ANTIALIAS))
-            comp_img = comp_img / 255.
-            output[position[1]:position[3]-1, position[0]:position[2]-1, :] *= comp_img
-            components_label['annotations'].append({'bbox': [position[0], position[1], position[2]-1-position[0], position[3]-1-position[1]], 'image_id': int(filename), 'category_id': classes[ii], 'id': cnt})
-            cnt += 1
+            try:
+                comp_img = np.array(comp_img.resize((position[2]-1 - position[0], position[3]-1 - position[1]), Image.ANTIALIAS))
+                comp_img = comp_img / 255.
+                output[position[1]:position[3]-1, position[0]:position[2]-1, :] *= comp_img
+                components_label['annotations'].append({'bbox': [position[0], position[1], position[2]-1-position[0], position[3]-1-position[1]], 'image_id': int(filename), 'category_id': classes[ii], 'id': cnt})
+                cnt += 1
+            except:
+                Pb_components_label['annotations'].append({'bbox': [position[0], position[1], position[2]-1-position[0], position[3]-1-position[1]], 'image_id': int(filename), 'category_id': classes[ii], 'id': cnt})
+                cnt += 1
+                
         output = Image.fromarray(np.uint8(output * 255.))
         output.save(args.po + '/' + filename + '.jpg')
     with open(args.pa, 'w') as output_file:
         json.dump(components_label, output_file, sort_keys=True, indent=4, separators=(',', ': '))
+    with open('Pb_anatations.json', 'w') as output_file:
+        json.dump(Pb_components_label, output_file, sort_keys=True, indent=4, separators=(',', ': '))
 
 def generate_map(MAP_DIR):
     CJ2Rico = {3: {'Images': ['Background Image', 'Image', 'Web View', 'Video', 'Map View']},\
