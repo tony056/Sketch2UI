@@ -1,52 +1,98 @@
 {
     "CJ2Rico": {
-        "Button": [
-            "Text Button"
-        ],
-        "CheckBox": [
-            "Checkbox"
-        ],
-        "Icon": [
-            "Icon"
-        ],
-        "Images": [
-            "Background Image",
-            "Image",
-            "Web View",
-            "Video",
-            "Map View"
-        ],
-        "Input": [
-            "Input"
-        ],
-        "Pager_Indicator": [
-            "Pager Indicator"
-        ],
-        "Radio_Button": [
-            "Radio Button",
-            "On/Off Switch"
-        ],
-        "Slider": [
-            "Slider"
-        ],
-        "Text": [
-            "Text"
-        ]
+        "0": {
+            "Button": [
+                "Text Button"
+            ]
+        },
+        "1": {
+            "CheckBox": [
+                "Checkbox"
+            ]
+        },
+        "2": {
+            "Icon": [
+                "Icon"
+            ]
+        },
+        "3": {
+            "Images": [
+                "Background Image",
+                "Image",
+                "Web View",
+                "Video",
+                "Map View"
+            ]
+        },
+        "4": {
+            "Input": [
+                "Input"
+            ]
+        },
+        "5": {
+            "Pager_Indicator": [
+                "Pager Indicator"
+            ]
+        },
+        "6": {
+            "Radio_Button": [
+                "Radio Button",
+                "On/Off Switch"
+            ]
+        },
+        "7": {
+            "Slider": [
+                "Slider"
+            ]
+        },
+        "8": {
+            "Text": [
+                "Text"
+            ]
+        }
     },
     "Rico2CJ": {
-        "Background Image": "Images",
-        "Checkbox": "CheckBox",
-        "Icon": "Icon",
-        "Image": "Images",
-        "Input": "Input",
-        "Map View": "Images",
-        "On/Off Switch": "Radio_Button",
-        "Pager Indicator": "Pager_Indicator",
-        "Radio Button": "Radio_Button",
-        "Slider": "Slider",
-        "Text": "Text",
-        "Text Button": "Button",
-        "Video": "Images",
-        "Web View": "Images"
+        "Background Image": {
+            "Images": 3
+        },
+        "Checkbox": {
+            "CheckBox": 1
+        },
+        "Icon": {
+            "Icon": 2
+        },
+        "Image": {
+            "Images": 3
+        },
+        "Input": {
+            "Input": 4
+        },
+        "Map View": {
+            "Images": 3
+        },
+        "On/Off Switch": {
+            "Radio_Button": 6
+        },
+        "Pager Indicator": {
+            "Pager_Indicator": 5
+        },
+        "Radio Button": {
+            "Radio_Button": 6
+        },
+        "Slider": {
+            "Slider": 7
+        },
+        "Text": {
+            "Text": 8
+        },
+        "Text Button": {
+            "Button": 0
+        },
+        "Video": {
+            "Images": 3
+        },
+        "Web View": {
+            "Images": 3
+        }
     }
 }
