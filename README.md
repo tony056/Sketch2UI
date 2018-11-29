@@ -9,18 +9,72 @@
 .
 ├── README.md
 ├── dataset_analysis
-    ├── dataset_analysis.py
-    ├── Map.json
-    └── analysis
-        ├── dataset_analysis.json
-        ├── dataset_components_analysis.json
-        ├── CJ_dataset_analysis.json
-        ├── CJ_components_analysis.json
-        ├── nonCJ_dataset_analysis.json
-        └── nonCJ_components_analysis.json
-└── dataset_generator
-    ├── dataset_generator.py
-    └── Map.json
+│   ├── Map.json
+│   ├── analysis
+│   │   ├── CJ_components_analysis.json
+│   │   ├── CJ_dataset_analysis.json
+│   │   ├── dataset_analysis.json
+│   │   ├── dataset_components_analysis.json
+│   │   ├── nonCJ_components_analysis.json
+│   │   └── nonCJ_dataset_analysis.json
+│   └── dataset_analysis.py
+├── dataset_generator
+│   ├── Map.json
+│   └── dataset_generator.py
+├── handsektching-app-api
+│   ├── LICENSE
+│   ├── README.md
+│   ├── create.js
+│   ├── delete.js
+│   ├── env.example
+│   ├── get.js
+│   ├── handler.js
+│   ├── libs
+│   │   ├── dynamodb-lib.js
+│   │   └── response-lib.js
+│   ├── list.js
+│   ├── mocks
+│   │   ├── create-event.json
+│   │   ├── delete-event.json
+│   │   ├── get-event.json
+│   │   ├── list-event.json
+│   │   └── update-event.json
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── serverless.yml
+│   ├── tests
+│   │   └── handler.test.js
+│   ├── update.js
+│   └── webpack.config.js
+└── sketch2ui-aws-client
+    ├── README.md
+    ├── package-lock.json
+    ├── package.json
+    ├── public
+    │   ├── favicon.ico
+    │   ├── index.html
+    │   └── manifest.json
+    ├── src
+    │   ├── App.css
+    │   ├── App.js
+    │   ├── App.test.js
+    │   ├── components
+    │   │   ├── Canvas.js
+    │   │   ├── ClassToast.js
+    │   │   ├── LogInModal.js
+    │   │   └── TaskDisplay.js
+    │   ├── config.js
+    │   ├── containers
+    │   │   ├── NavBar.js
+    │   │   └── SketchingContainer.js
+    │   ├── index.css
+    │   ├── index.js
+    │   ├── libs
+    │   │   ├── aws-lib.js
+    │   │   └── utils.js
+    │   ├── logo.svg
+    │   └── serviceWorker.js
+    └── yarn.lock
 ```
 
 ## Project Components
