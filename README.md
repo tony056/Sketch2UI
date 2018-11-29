@@ -46,17 +46,21 @@
 
 ### 1. Dataset Analysis
 #### Usage
-`python3 dataset_analysis.py [PATH_TO_DATASET_DIR] [REPORT_NAME] [MAP_NAME](Optional)`
+`python3 dataset_analysis.py [PATH_TO_DATASET_DIR] [REPORT_NAME](Optional) [MAP_NAME](Optional)`
 
 #### Extend report content
 1. set *optional* => True for *write_result_to_file*
 2. add additional properties to result after `if optional:`
 
-### 2. Sketching Interface
+### 2. Dataset Generator
 #### Usage
-```
-cd sketch2ui-aws-client
-npm install
-yarn start
-#TODO: Deploy React part to AWS.
-```
+`python3 dataset_analysis.py --ps [PATH_TO_Rico_DATASET_DIR] --pc [PATH_TO_CJ_DATASET_DIR] \
+                             --po [PATH_TO_OUTPUT_DATASET_DIR] --pm [PATH_TO_MAP_FILE] \
+                             --gm [INDICATE_TO_GENERATE_MAP] --pcjc [PATH_TO_CJ_FILES_COMPONENTS_JSON] \
+                             --pa [PATH_TO_OUTPUT_ANATATIONS]`
+
+#### Output
+1. Map.json
+2. anatations.json
+3. Pb_anatations.json
+4. $PATH_TO_OUTPUT_DATASET_DIR/img1.jpg img2.jpg ...
