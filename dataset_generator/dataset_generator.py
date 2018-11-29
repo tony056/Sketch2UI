@@ -1,4 +1,4 @@
-# execution: python3 dataset_analysis.py --ps [PATH_TO_Rico_DATASET_DIR] --pc [PATH_TO_CJ_DATASET_DIR] 
+# execution: python3 dataset_analysis.py --ps [PATH_TO_Rico_DATASET_DIR] --pc [PATH_TO_CJ_DATASET_DIR]
 #                                        --po [PATH_TO_OUTPUT_DATASET_DIR] --pm [PATH_TO_MAP_FILE]
 #                                        --gm [INDICATE_TO_GENERATE_MAP] --pcjc [PATH_TO_CJ_FILES_COMPONENTS_JSON]
 #                                        --pa [PATH_TO_OUTPUT_ANATATIONS]
@@ -116,7 +116,7 @@ def parse_json_files(args, Map):
             json.dump(CJ_files_components, output_file, sort_keys=True, indent=4, separators=(',', ': '))
         with open('Pb_files_components.json', 'w') as output_file:
             json.dump(Pb_files_components, output_file, sort_keys=True, indent=4, separators=(',', ': '))
-        
+
     return CJ_files_components, Pb_files_components
 
 def generate_data(args, CJ_files_components):
@@ -149,18 +149,45 @@ def generate_data(args, CJ_files_components):
                 comp_img = np.array(comp_img.resize((position[2]-1 - position[0], position[3]-1 - position[1]), Image.ANTIALIAS))
                 comp_img = comp_img / 255.
                 output[position[1]:position[3]-1, position[0]:position[2]-1, :] *= comp_img
-                components_label['annotations'].append({'bbox': [position[0], position[1], position[2]-1-position[0], position[3]-1-position[1]], 'image_id': int(filename), 'category_id': classes[ii], 'id': cnt})
+                anno_obj = generate_annotation_obj(position, filename, classes[ii], cnt)
+                # components_label['annotations'].append({'bbox': [position[0], position[1], position[2]-1-position[0], position[3]-1-position[1]], 'image_id': int(filename), 'category_id': classes[ii], 'id': cnt})
+                components_label['annotations'].append(anno_obj)
                 cnt += 1
             except:
-                Pb_components_label['annotations'].append({'bbox': [position[0], position[1], position[2]-1-position[0], position[3]-1-position[1]], 'image_id': int(filename), 'category_id': classes[ii], 'id': cnt})
+                anno_obj = generate_annotation_obj(position, filename, classes[ii], cnt)
+                # Pb_components_label['annotations'].append({'bbox': [position[0], position[1], position[2]-1-position[0], position[3]-1-position[1]], 'image_id': int(filename), 'category_id': classes[ii], 'id': cnt})
+                Pb_components_label['annotations'].append(anno_obj)
                 cnt += 1
-                
+
         output = Image.fromarray(np.uint8(output * 255.))
         output.save(args.po + '/' + filename + '.jpg')
     with open(args.pa, 'w') as output_file:
         json.dump(components_label, output_file, sort_keys=True, indent=4, separators=(',', ': '))
     with open('Pb_anatations.json', 'w') as output_file:
         json.dump(Pb_components_label, output_file, sort_keys=True, indent=4, separators=(',', ': '))
+
+def generate_annotation_obj(position, filename, category_id, id):
+    x, y, maxX, maxY = position
+    width = maxX - x - 1
+    height = maxY - y - 1
+    image_id = filename if type(filename) == int else int(filename)
+    assert type(category_id) == int
+    assert type(id) == int
+    obj = {
+        'bbox': [x, y, width, height],
+        'image_id': image_id,
+        'category_id': category_id,
+        'id': id,
+        'area': float(width * height),
+        'iscrowd': 0,
+        'segmentation': bbox2poly([x, y, width, height])
+    }
+    return obj
+
+def bbox2poly(bbox):
+    x, y, width, height = bbox
+    output = [[x, y, x, y + height, x + width, y, x + width, y  + height]]
+    return output
 
 def generate_map(MAP_DIR):
     CJ2Rico = {3: {'Images': ['Background Image', 'Image', 'Web View', 'Video', 'Map View']},\
@@ -183,7 +210,7 @@ def main(args):
             Map = json.load(open(MAP_DIR, 'r'))
         else:
             Map = generate_map(MAP_DIR)
-    
+
     if not os.path.isfile(args.pcjc):
         CJ_files_components, Pb_files_components = parse_json_files(args, Map)
     else:
