@@ -162,9 +162,9 @@ def check_invaild_bbox(position):
     height = maxY - y - 1
     area = width * height
     if area < 25 or width < 5 or height < 5:
-        return False
-    else:
         return True
+    else:
+        return False
 
 def encode_img_info(filename):
     # encode image information
@@ -227,8 +227,8 @@ def generate_data(args, CJ_files_components, Map):
 
             # an ugly way to deal with the noise inside the Rico dataset
             try:
-                width = position[2]-1 - position[0]
-                height = position[3]-1 - position[1]
+                width = position[2] - 1 - position[0]
+                height = position[3] - 1 - position[1]
                 comp_img = comp_img.resize((width, height), Image.ANTIALIAS)
                 comp_img = np.array(comp_img) / 255.
                 output[position[1]:position[3]-1, position[0]:position[2]-1, :] *= comp_img
@@ -263,7 +263,7 @@ def generate_data(args, CJ_files_components, Map):
 
         # counting and show
         count += 1
-        if count > 30:
+        if count > 3300:
             break
         display_loading(count, base, file_num)
 
