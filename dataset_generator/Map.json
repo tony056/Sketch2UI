@@ -49,14 +49,46 @@
             "Text": [
                 "Text"
             ]
+        },
+        "9": {
+            "Bar": [
+                "Toolbar",
+                "Button Bar",
+                "Bottom Navigation",
+                "Multi-Tab"
+            ]
+        },
+        "10": {
+            "Card": [
+                "Card",
+                "List Item"
+            ]
+        },
+        "11": {
+            "Modal": [
+                "Modal",
+                "Drawer"
+            ]
         }
     },
     "Rico2CJ": {
         "Background Image": {
             "Images": 3
         },
+        "Bottom Navigation": {
+            "Bar": 9
+        },
+        "Button Bar": {
+            "Bar": 9
+        },
+        "Card": {
+            "Card": 10
+        },
         "Checkbox": {
             "CheckBox": 1
+        },
+        "Drawer": {
+            "Modal": 11
         },
         "Icon": {
             "Icon": 2
@@ -67,8 +99,17 @@
         "Input": {
             "Input": 4
         },
+        "List Item": {
+            "Card": 10
+        },
         "Map View": {
             "Images": 3
+        },
+        "Modal": {
+            "Modal": 11
+        },
+        "Multi-Tab": {
+            "Bar": 9
         },
         "On/Off Switch": {
             "Radio_Button": 6
@@ -87,6 +128,9 @@
         },
         "Text Button": {
             "Button": 0
+        },
+        "Toolbar": {
+            "Bar": 9
         },
         "Video": {
             "Images": 3

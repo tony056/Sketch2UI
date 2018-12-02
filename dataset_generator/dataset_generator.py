@@ -60,27 +60,44 @@ def display_loading(count, base, file_num):
     if count % base == 0:
         print('{0}/{1}'.format(count, file_num))
 
-def traverse_tree(root):
+def traverse_tree_leaf(root):
     if 'children' in root.keys():
         output = []
         for child in root['children']:
-            output += traverse_tree(child)
+            output += traverse_tree_leaf(child)
     else:
         output = (root['componentLabel'], root['bounds'])
     return output
 
+def traverse_tree_all(root):
+    if 'componentLabel' in root.keys():
+        output = [root['componentLabel'], root['bounds']]
+    else:
+        output = []
+    if 'children' in root.keys():
+        for child in root['children']:
+            output += traverse_tree_all(child)
+    return output
+
+def create_component_obj(Rico_label, CJ_label, CJ_class, bounds):
+    output = {}
+    output['Rico_label'] = Rico_label
+    output['CJ_label'] = CJ_label
+    output['CJ_class'] = CJ_class
+    output['bounds'] = bounds
+    return output
+
 def parse_json_files(args, Map):
     path = args.ps
-    CJ_files_components = collections.defaultdict(list)
-    Pb_files_components = collections.defaultdict(list)
     if not os.path.isdir(path):
         print('Please input the path to the dir of the dataset!')
         return
+    CJ_files_components = collections.defaultdict(list)
+    Pb_files_components = collections.defaultdict(list)
     print('parsing........')
     files = os.listdir(path)
     file_num = len(files)
-    base = file_num // 10
-    count = 0
+    base, count = file_num // 10, 0
     for filename in files:
         count += 1
         pb_triger = False
@@ -95,15 +112,14 @@ def parse_json_files(args, Map):
             if 'children' not in data:
                 print('the file without child components: {0}'.format(filename))
                 continue
-            components = traverse_tree(data)
-            components = [(components[ii * 2], components[ii * 2 + 1]) for ii in range(len(components) // 2)]
-            Rico_label = []
-            CJ_label = []
-            CJ_class = []
-            bounds = []
+            #components = traverse_tree_leaf(data)
+            tmp = traverse_tree_all(data)
+            components = []
+            for ii in range(len(tmp) // 2):
+                components.append((tmp[ii * 2], tmp[ii * 2 + 1]))
+            Rico_label, CJ_label, CJ_class, bounds = [], [], [], []
             for component in components:
-                label = component[0]
-                com_bounds = component[1]
+                label, com_bounds = component
                 try:
                     Rico_label.append(label)
                     bounds.append(com_bounds)
@@ -114,9 +130,9 @@ def parse_json_files(args, Map):
                     CJ_class.append('')
                     pb_triger = True
             if pb_triger:
-                Pb_files_components[filename.split('.')[0]] = {'Rico_label': Rico_label, 'CJ_label': CJ_label, 'CJ_class': CJ_class, 'bounds': bounds}
+                Pb_files_components[index] = create_component_obj(Rico_label, CJ_label, CJ_class, bounds)
             else:
-                CJ_files_components[filename.split('.')[0]] = {'Rico_label': Rico_label, 'CJ_label': CJ_label, 'CJ_class': CJ_class, 'bounds': bounds}
+                CJ_files_components[index] = create_component_obj(Rico_label, CJ_label, CJ_class, bounds)
 
     if not os.path.isfile(args.pcjc):
         with open(args.pcjc, 'w') as output_file:
@@ -219,21 +235,28 @@ def generate_data(args, CJ_files_components, Map):
         annotation_objs = []
 
         for ii, component in enumerate(components):
-            candidates = fnmatch.filter(os.listdir(args.pc + '/' + component + '/'), '*.jpg')
+            # check whether bbox dimension is valid
             position = positions[ii]
-            comp_img = Image.open(args.pc + '/' + component + '/' + random.choice(candidates))
             if check_invaild_bbox(position):
                 continue
 
-            # an ugly way to deal with the noise inside the Rico dataset
-            try:
-                width = position[2] - 1 - position[0]
-                height = position[3] - 1 - position[1]
-                comp_img = comp_img.resize((width, height), Image.ANTIALIAS)
-                comp_img = np.array(comp_img) / 255.
-                output[position[1]:position[3]-1, position[0]:position[2]-1, :] *= comp_img
-            except:
-                Pb_triger = True
+            # check if the component is a high-level component
+            if os.path.isdir(args.pc + '/' + component + '/'):
+                # randomly sample a CJ component
+                candidates = fnmatch.filter(os.listdir(args.pc + '/' + component + '/'), '*.jpg')
+                comp_img = Image.open(args.pc + '/' + component + '/' + random.choice(candidates))
+
+                # an ugly way to deal with the noise inside the Rico dataset
+                try:
+                    width = position[2] - 1 - position[0]
+                    height = position[3] - 1 - position[1]
+                    comp_img = comp_img.resize((width, height), Image.ANTIALIAS)
+                    comp_img = np.array(comp_img) / 255.
+                    output[position[1]:position[3]-1, position[0]:position[2]-1, :] *= comp_img
+                except:
+                    Pb_triger = True
+
+            # generate COCO-like annotation format
             anno_obj = generate_annotation_obj(position, filename, classes[ii], cnt)
             annotation_objs.append(anno_obj)
 
@@ -248,7 +271,7 @@ def generate_data(args, CJ_files_components, Map):
         else:
             # if the number of validation data is less than agrs.nv,
             # toss a coin to decide this data belong to train or val
-            if len(val_components_label['images']) < args.nv and random.random > 0.7:
+            if len(val_components_label['images']) < args.nv and random.random() > 0.7:
                 for anno_obj in annotation_objs:
                     val_components_label['annotations'].append(anno_obj)
                 val_components_label['images'].append(encode_img_info(filename))
@@ -263,8 +286,6 @@ def generate_data(args, CJ_files_components, Map):
 
         # counting and show
         count += 1
-        if count > 3300:
-            break
         display_loading(count, base, file_num)
 
     # write out the anno and pb_anno
@@ -283,7 +304,9 @@ def generate_map(MAP_DIR):
     CJ2Rico = {3: {'Images': ['Background Image', 'Image', 'Web View', 'Video', 'Map View']},\
                8: {'Text': ['Text']}, 6: {'Radio_Button': ['Radio Button', 'On/Off Switch']},\
                4: {'Input': ['Input']}, 1: {'CheckBox': ['Checkbox']}, 7: {'Slider': ['Slider']},\
-               0: {'Button': ['Text Button']}, 2: {'Icon': ['Icon']}, 5: {'Pager_Indicator': ['Pager Indicator']}}
+               0: {'Button': ['Text Button']}, 2: {'Icon': ['Icon']}, 5: {'Pager_Indicator': ['Pager Indicator']},\
+               9: {'Bar': ['Toolbar', 'Button Bar', 'Bottom Navigation', 'Multi-Tab']},\
+               10: {'Card': ['Card', 'List Item']}, 11: {'Modal': ['Modal', 'Drawer']}}
 
     # Rico2CJ
     Rico2CJ = {}
