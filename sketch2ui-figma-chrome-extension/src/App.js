@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Switch, Box } from 'gestalt';
 import './App.css';
 import 'gestalt/dist/gestalt.css';
-import SyncInfoField from './SyncInfoField';
+import SyncInfoField from './components/SyncInfoField';
 
 class App extends Component {
   constructor(props) {
@@ -36,7 +36,6 @@ class App extends Component {
           </Box>
           <SyncInfoField isSynced={switched} info={"testing...."} />
         </Box>
-
       </div>
     );
   }
