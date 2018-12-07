@@ -7,7 +7,7 @@ import AWSAppSyncClient from 'aws-appsync';
 import { Rehydrated } from 'aws-appsync-react';
 import { ApolloProvider } from 'react-apollo';
 import appSyncConfig from './appsync';
-
+import injectJS from './inject';
 
 const client = new AWSAppSyncClient({
   url: appSyncConfig.graphqlEndpoint,
@@ -25,7 +25,7 @@ const WithProvider = () => (
     </Rehydrated>
   </ApolloProvider>
 );
-
+injectJS( 'fsadfajfld.js', 'body');
 ReactDOM.render(<WithProvider />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
