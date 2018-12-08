@@ -8,8 +8,8 @@ const injectApp = () => {
   document.body.appendChild(script);
 };
 
-const create = () => {
-  const event = new CustomEvent('skNewData', {detail: {data: fake}});
+const create = (data) => {
+  const event = new CustomEvent('skNewData', {detail: { data: fake }});
   window.dispatchEvent(event);
   console.log('dispatchEvent');
 };
@@ -17,9 +17,9 @@ const create = () => {
 injectApp();
 
 chrome.runtime.onMessage.addListener((request, sender, response) => {
-  if (request.injectApp) {
+  if (request.isNew) {
     console.log('inject msg.....');
-    create();
+    create(request.data);
     response({
       startedExtension: true,
     });

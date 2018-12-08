@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Switch, Box } from 'gestalt';
 import 'gestalt/dist/gestalt.css';
-// import SyncInfoField from './components/SyncInfoField';
+import TextInfo from './TextInfo';
 import { connectToServer, listenToData, disconnect } from '../api/connection';
 
 class App extends Component {
@@ -9,6 +9,7 @@ class App extends Component {
     super(props);
     this.state = {
       switched: false,
+      frames: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleData = this.handleData.bind(this);
@@ -27,13 +28,19 @@ class App extends Component {
 
   handleData(data) {
     console.log(`new data: ${JSON.stringify(data)}`);
+    const { frames } = this.state;
+    frames.push(data);
+    this.setState({ frames }, () => {
+      this.props.sendToContentScript(data);
+    });
   }
 
   render () {
-    const { switched } = this.state;
+    const { switched, frames } = this.state;
+    const num = frames.length;
     return (
       <div className="App">
-        <Box width={360} height={100} direction="column" display="block" color="green" paddingY={4}>
+        <Box width={90} height={160} direction="column" display="block" color="green" paddingY={4}>
           <Box
             column={12}
             paddingY={2}
@@ -46,6 +53,7 @@ class App extends Component {
               switched={switched}
             />
           </Box>
+          <TextInfo isListening={switched} num={num} />
         </Box>
       </div>
     );
