@@ -1,0 +1,21 @@
+{
+  "name": "sketch2ui-output",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/js/main.js",
+  "scripts": {
+    "build": "parcel build src/js/main.js -d src/build/ -o main.js",
+    "watch": "parcel watch src/js/main.js -d src/build/ -o main.js",
+    "build-plugin": "parcel build src/js/plugin.js -d src/build/ -o plugin.js",
+    "build-inject": "parcel build src/js/inject.js -d src/build/ -o inject.js"
+  },
+  "author": "Tony Tung",
+  "license": "ISC",
+  "dependencies": {
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "parcel-bundler": "^1.10.3",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3"
+  }
+}

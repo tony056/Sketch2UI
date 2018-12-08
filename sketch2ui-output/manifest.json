@@ -1,0 +1,26 @@
+{
+  "manifest_version": 2,
+  "name": "Sketch2UI figma chrome extension",
+  "description": "a plugin to display Sketch2UI's result in your Figma file.",
+  "version": "0.0.1",
+  "browser_action": {
+    "default_popup": "src/popup.html"
+  },
+  "permissions": [
+    "activeTab",
+    "tabs"
+  ],
+  "web_accessible_resources": [
+    "src/build/plugin.js",
+    "src/build/inject.js"
+  ],
+  "content_scripts": [
+    {
+      "all_frames": true,
+      "matches": ["https://www.figma.com/file/*/*"],
+      "js": ["src/build/main.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "content_security_policy": "script-src 'self'; object-src 'self'"
+}
