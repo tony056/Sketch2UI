@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 
-const server_url = 'http://localhost'
+const server_url = 'http://10.19.193.10:7000';
 let socket = null;
 const connectToServer = () => {
   if (socket) return;

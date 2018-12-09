@@ -9,14 +9,14 @@ class DataParser {
     console.log('parsing data....');
     const { frameId, lowLevelComps, highLevelComps } = data;
     this.plugin.createFrame(frameId, () => {
-      console.log('parsing data.... highLevelComps');
-      // render highLevelComps
-      highLevelComps.forEach(comp => {
-        this.plugin.createComponent(comp);
-      });
       console.log('parsing data.... lowLevelComps');
       // render lowLevelComps
       lowLevelComps.forEach(comp => {
+        this.plugin.createComponent(comp);
+      });
+      console.log('parsing data.... highLevelComps');
+      // render highLevelComps
+      highLevelComps.forEach(comp => {
         this.plugin.createComponent(comp);
       });
     });

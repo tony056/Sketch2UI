@@ -9,9 +9,8 @@ const injectApp = () => {
 };
 
 const create = (data) => {
-  const event = new CustomEvent('skNewData', {detail: { data: fake }});
+  const event = new CustomEvent('skNewData', {detail: { data: JSON.parse(data) }});
   window.dispatchEvent(event);
-  console.log('dispatchEvent');
 };
 
 injectApp();
