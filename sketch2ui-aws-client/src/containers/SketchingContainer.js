@@ -3,12 +3,13 @@ import React from 'react';
 import {
   Container, Box, Modal, Spinner,
 } from 'gestalt';
-import { Auth, API } from 'aws-amplify';
+import { Auth } from 'aws-amplify';
 import NavBar from './NavBar';
 import Canvas from '../components/Canvas';
-import TaskDisplay from '../components/TaskDisplay';
-import s3Upload from '../libs/aws-lib';
-import { dataURItoBlob } from '../libs/utils';
+// import TaskDisplay from '../components/TaskDisplay';
+import ResultDisplay from '../components/ResultDisplay';
+import { uploadImageByDataURI } from '../libs/demo-api';
+// import s3Upload from '../libs/aws-lib';
 
 export default class SketchingContainer extends React.Component {
   constructor(props) {
@@ -21,7 +22,7 @@ export default class SketchingContainer extends React.Component {
     this.savePath = this.savePath.bind(this);
     this.handleAuthentication = this.handleAuthentication.bind(this);
     this.handleItemChange = this.handleItemChange.bind(this);
-    this.updateItemCount = this.updateItemCount.bind(this);
+    // this.updateItemCount = this.updateItemCount.bind(this);
     this.state = {
       currPoints: [],
       redoPoints: [],
@@ -30,13 +31,14 @@ export default class SketchingContainer extends React.Component {
       isPainting: false,
       isAuthenticated: false,
       isLoading: false,
-      currentTask: 'Icon',
-      currentNumber: 0,
-      targetNumbers: {
-        Icon: 80,
-        'Pager-indicator': 20,
-        Slider: 20,
-      },
+      resultSrc: null,
+      // currentTask: 'Icon',
+      // currentNumber: 0,
+      // targetNumbers: {
+      //   Icon: 80,
+      //   'Pager-indicator': 20,
+      //   Slider: 20,
+      // },
     };
   }
 
@@ -50,8 +52,8 @@ export default class SketchingContainer extends React.Component {
       }
       this.setState({ isAuthenticated: false });
     }
-    const { currentTask } = this.state;
-    this.updateItemCount(currentTask);
+    // const { currentTask } = this.state;
+    // this.updateItemCount(currentTask);
   }
 
   redoCanvas() {
@@ -63,25 +65,18 @@ export default class SketchingContainer extends React.Component {
 
   async saveCanvas() {
     // console.log('save');
-    const { canvas, currentTask } = this.state;
+    const { canvas } = this.state;
     const data = canvas ? canvas.toDataURL('image/jpeg') : document.getElementById('canvas').toDataURL('image/jpeg');
-    const dataBlob = dataURItoBlob(data);
+    // const dataBlob = dataURItoBlob(data);
     this.setState({ isLoading: true });
-    try {
-      const attachment = await s3Upload(dataBlob, currentTask);
-      API.post('notes', '/notes', {
-        body: {
-          attachment,
-          content: 'testing',
-        },
-      }).then(() => {
-        this.updateItemCount(currentTask);
-      });
-      this.cleanCanvas();
-    } catch (e) {
-      console.log(e.message);
-    }
-    this.setState({ isLoading: false });
+    // uploadImage(dataBlob, (resData) => {
+    //   console.log(resData);
+    //   this.setState({ isLoading: false });
+    // });
+    uploadImageByDataURI(data, (resData) => {
+      const dataURI = `data:image/png;base64,${resData.imageURI}`;
+      this.setState({ isLoading: false, resultSrc: dataURI });
+    });
   }
 
   addPoint(point) {
@@ -110,10 +105,10 @@ export default class SketchingContainer extends React.Component {
     this.updateItemCount(value);
   }
 
-  async updateItemCount(task) {
-    const { count } = await API.get('notes', `/notes/${task.toLowerCase()}`);
-    this.setState({ currentTask: task, currentNumber: count });
-  }
+  // async updateItemCount(task) {
+  //   const { count } = await API.get('notes', `/notes/${task.toLowerCase()}`);
+  //   this.setState({ currentTask: task, currentNumber: count });
+  // }
 
   undoCanvas() {
     const { paths, redoPoints } = this.state;
@@ -138,9 +133,7 @@ export default class SketchingContainer extends React.Component {
       isPainting,
       isAuthenticated,
       isLoading,
-      targetNumbers,
-      currentTask,
-      currentNumber,
+      resultSrc,
     } = this.state;
     const totalPaths = paths.slice();
     if (currPoints.length > 0) {
@@ -162,11 +155,7 @@ export default class SketchingContainer extends React.Component {
           />
         </Box>
         <Box column={12} display="flex" alignItems="center" justifyContent="around" color="darkGray">
-          <TaskDisplay
-            number={currentNumber}
-            targetNumber={targetNumbers[currentTask]}
-            task={currentTask}
-          />
+          <ResultDisplay isResult={resultSrc !== null} src={resultSrc} />
           <Canvas addPoint={this.addPoint} points={totalPaths} stop={this.savePath} />
         </Box>
         {isLoading && (

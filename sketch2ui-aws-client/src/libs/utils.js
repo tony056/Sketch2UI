@@ -6,7 +6,16 @@ function dataURItoBlob(dataURI) {
   for (let i = 0; i < decoded.length; i += 1) {
     array.push(decoded.charCodeAt(i));
   }
-  return new Blob([new Uint8Array(array)], { type: 'image/jpeg' });
+  return new Blob([new Uint8Array(array)], { type: 'image/png' });
+}
+
+function dataURItoBytes(dataURI) {
+  const decoded = window.atob(dataURI.split(',')[1]);
+  const array = new Uint8Array(decoded.length);
+  for (let i = 0; i < decoded.length; i += 1) {
+    array[i] = decoded.charCodeAt(i);
+  }
+  return array;
 }
 
 
@@ -48,4 +57,4 @@ function getExampleImageSrc(task, count, targetNumber) {
   return exampleImageSrc[task][index];
 }
 
-export { dataURItoBlob, getExampleImageSrc };
+export { dataURItoBlob, getExampleImageSrc, dataURItoBytes };

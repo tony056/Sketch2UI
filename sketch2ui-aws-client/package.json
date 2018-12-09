@@ -4,12 +4,16 @@
   "private": true,
   "dependencies": {
     "aws-amplify": "^1.1.10",
+    "axios": "^0.18.0",
     "body-scroll-lock": "^2.5.10",
+    "form-data": "^2.3.3",
+    "fs": "0.0.1-security",
     "gestalt": "^0.83.0",
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "react-scripts": "2.1.1"
+    "react-scripts": "2.1.1",
+    "request": "^2.88.0"
   },
   "scripts": {
     "start": "react-scripts start",
