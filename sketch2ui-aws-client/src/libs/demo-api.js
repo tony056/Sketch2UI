@@ -27,7 +27,7 @@ const uploadImageByDataURI = (dataURI, cb) => {
     uri: `${baseURL}/post`,
     method: 'POST',
     headers: {
-      'Access-Control-Allow-Origin': '*',
+      'Origin': 'http://evil.com/',
       'Access-Control-Request-Method': 'POST',
       'Access-Control-Request-Header': 'X-Custom-Header',
     },
@@ -35,6 +35,7 @@ const uploadImageByDataURI = (dataURI, cb) => {
       imageURI: dataURI,
     },
   };
+  console.log('going to request');
   request(options, (err, res, body) => {
     if (err) {
       console.log(`failed: ${err}`);

@@ -74,7 +74,8 @@ export default class SketchingContainer extends React.Component {
     //   this.setState({ isLoading: false });
     // });
     uploadImageByDataURI(data, (resData) => {
-      const dataURI = `data:image/png;base64,${resData.imageURI}`;
+      const jsonObj = resData;
+      const dataURI = `data:image/png;base64,${jsonObj.imageURI}`;
       this.setState({ isLoading: false, resultSrc: dataURI });
     });
   }

@@ -1,4 +1,5 @@
 import Sketch2UI from './plugin';
+import { resolveOverlapping, postProcessor } from './api/postprocessing';
 
 class DataParser {
   constructor(plugin) {
@@ -10,15 +11,25 @@ class DataParser {
     const { frameId, lowLevelComps, highLevelComps } = data;
     this.plugin.createFrame(frameId, () => {
       console.log('parsing data.... lowLevelComps');
-      // render lowLevelComps
-      lowLevelComps.forEach(comp => {
-        this.plugin.createComponent(comp);
-      });
-      console.log('parsing data.... highLevelComps');
-      // render highLevelComps
-      highLevelComps.forEach(comp => {
-        this.plugin.createComponent(comp);
-      });
+      const { toolBar, bottomNavigation, restComps } = postProcessor(lowLevelComps);
+      // // render lowLevelComps
+      // toolBar.tlComps.forEach(p => {
+      //   console.log(`tool bar: ${p.bbox[0]} ${p.bbox[1]}`);
+      // });
+      // toolBar.trComps.forEach(p => {
+      //   console.log(`tool bar: ${p.bbox[0]} ${p.bbox[1]}`);
+      // });
+      // bottomNavigation.comps.forEach(p => {
+      //   console.log(`bn: ${p.bbox[0]} ${p.bbox[1]}`);
+      // });
+      // this.plugin.createToolBar(toolBar);
+      // this.plugin.createBottomNavigation(bottomNavigation);
+      // // const resolvedLowComps = resolveOverlapping(lowLevelComps);
+      this.plugin.createComponents(restComps);
+      // console.log('parsing data.... highLevelComps');
+      // // // render highLevelComps
+      // const resolvedHighComps = resolveOverlapping(highLevelComps);
+      // this.plugin.createComponents(resolvedHighComps);
     });
   }
 }

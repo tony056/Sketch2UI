@@ -20,6 +20,7 @@ class App extends Component {
     if (!switched) {
       connectToServer();
       listenToData(this.handleData);
+      // this.handleData(null);
     } else {
       disconnect();
     }
