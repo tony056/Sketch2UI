@@ -1,0 +1,33 @@
+from mongoengine import *
+
+class Sk2uiData(Document):
+    name = StringField(required=True)
+    rico_ad = ListField(ListField())
+    rico_bg_image = ListField(ListField())
+    rico_bottom_nav = ListField(ListField())
+    rico_btn_bar = ListField(ListField())
+    rico_card = ListField(ListField())
+    rico_checkbox = ListField(ListField())
+    rico_date_picker = ListField(ListField())
+    rico_drawer = ListField(ListField())
+    rico_icon = ListField(ListField())
+    rico_image = ListField(ListField())
+    rico_input = ListField(ListField())
+    rico_list_item = ListField(ListField())
+    rico_map_view = ListField(ListField())
+    rico_modal = ListField(ListField())
+    rico_multi_tab = ListField(ListField())
+    rico_num_stepper = ListField(ListField())
+    rico_switch = ListField(ListField())
+    rico_pager_indicator = ListField(ListField())
+    rico_radio_btn = ListField(ListField())
+    rico_slider = ListField(ListField())
+    rico_text = ListField(ListField())
+    rico_text_btn = ListField(ListField())
+    rico_toolbar = ListField(ListField())
+    rico_video = ListField(ListField())
+    rico_web_view = ListField(ListField())
+    rico_image_file = ImageField(required=True)
+    rico_anno_image_file = ImageField(required=True)
+
+__all__ = ['Sk2uiData',]
