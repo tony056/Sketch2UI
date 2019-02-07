@@ -213,3 +213,4 @@ pip-selfcheck.json
 .DS_Store
 .tmp
 # End of https://www.gitignore.io/api/node,python
+/sk2ui-data
