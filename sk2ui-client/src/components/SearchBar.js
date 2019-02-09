@@ -1,23 +1,19 @@
 import React from 'react';
 import { Input } from 'antd';
+import PropTypes from 'prop-types';
 
 const { Search } = Input;
 
-const handleSearch = (value) => {
-  console.log(value);
-  // fetch('/api/search', {
-  //   method: 'POST',
-  //   headers: 'application/json',
-  //   body: JSON.stringify({ value }),
-  // });
-};
-
-export default function SearchBar() {
+export default function SearchBar({ searchByValue }) {
   return (
     <Search
       placeholder="input file number"
-      onSearch={handleSearch}
+      onSearch={value => searchByValue(value)}
       style={{ width: '30%' }}
     />
   );
 }
+
+SearchBar.propTypes = {
+  searchByValue: PropTypes.func.isRequired,
+};

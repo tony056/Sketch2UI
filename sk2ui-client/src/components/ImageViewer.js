@@ -2,28 +2,13 @@ import React from 'react';
 import {
   Card, Carousel, List, Radio, Row, Icon,
 } from 'antd';
-
-const data = [
-  {
-    alt: 'blue',
-    url: 'https://via.placeholder.com/240x150/0000FF/808080?Text=Blue',
-  },
-  {
-    alt: 'green',
-    url: 'https://via.placeholder.com/240x150/00FF00/808080?Text=Green',
-  },
-  {
-    alt: 'red',
-    url: 'https://via.placeholder.com/240x150/FF0000/808080?Text=Red',
-  },
-];
+import PropTypes from 'prop-types';
 
 export default class ImageViewer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isCompact: true,
-      source: data,
     };
     this.renderCarousel = this.renderCarousel.bind(this);
     this.renderList = this.renderList.bind(this);
@@ -37,16 +22,16 @@ export default class ImageViewer extends React.Component {
   }
 
   renderCarousel() {
-    const { source } = this.state;
+    const { source } = this.props;
     return (
       <Carousel>
-        {source.map(img => (<img alt={img.alt} src={img.url} />))}
+        {source.map(img => (<img key={img.alt} alt={img.alt} src={img.url} />))}
       </Carousel>
     );
   }
 
   renderList() {
-    const { source } = this.state;
+    const { source } = this.props;
     return (
       <List
         grid={{ gutter: 16, column: 4 }}
@@ -83,3 +68,7 @@ export default class ImageViewer extends React.Component {
     );
   }
 }
+
+ImageViewer.propTypes = {
+  source: PropTypes.arrayOf(PropTypes.object).isRequired,
+};

@@ -1,28 +1,37 @@
 import React from 'react';
-import { Collapse } from 'antd';
+import { Collapse, Empty, Tag } from 'antd';
+import PropTypes from 'prop-types';
 
 const { Panel } = Collapse;
 
-const text = (
-  <p style={{ paddingLeft: 24 }}>
-    A dog is a type of domesticated animal.
-    Known for its loyalty and faithfulness,
-    it can be found as a welcome guest in many households across the world.
-  </p>
-);
+// const text = (
+//   <p style={{ paddingLeft: 24 }}>
+//     A dog is a type of domesticated animal.
+//     Known for its loyalty and faithfulness,
+//     it can be found as a welcome guest in many households across the world.
+//   </p>
+// );
 
-export default function ClassDataDisplayer() {
+const displayBboxs = bboxes => bboxes.map(bbox => <Tag>{bbox.join(', ')}</Tag>);
+
+export default function ClassDataDisplayer({ labels }) {
   return (
     <Collapse bordered={false} defaultActiveKey={['1']}>
-      <Panel header="This is panel header 1" key="1">
-        {text}
-      </Panel>
-      <Panel header="This is panel header 2" key="2">
-        {text}
-      </Panel>
-      <Panel header="This is panel header 3" key="3">
-        {text}
-      </Panel>
+      {labels && labels.length > 0
+        ? labels.map(label => (
+          <Panel header={label[0]} key={label[0]}>
+            {displayBboxs(label[1])}
+          </Panel>
+        ))
+        : <Empty />}
     </Collapse>
   );
 }
+
+ClassDataDisplayer.propTypes = {
+  labels: PropTypes.arrayOf(PropTypes.array),
+};
+
+ClassDataDisplayer.defaultProps = {
+  labels: [],
+};
