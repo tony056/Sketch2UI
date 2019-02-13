@@ -9,7 +9,7 @@ export default function HeaderBar({ defaultKey }) {
   return (
     <Header>
       <div className="logo" />
-      <NavBar defaultKeys={defaultKey} />
+      <NavBar defaultKey={defaultKey} />
     </Header>
   );
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Menu, Icon } from 'antd';
 import PropTypes from 'prop-types';
-
+import { Link } from 'react-router-dom';
 
 export default class NavBar extends React.Component {
   constructor(props) {
@@ -27,16 +27,22 @@ export default class NavBar extends React.Component {
         style={{ lineHeight: '64px' }}
       >
         <Menu.Item key="search">
-          <Icon type="file-search" />
-          Search
+          <Link to="/">
+            <Icon type="file-search" />
+            Search
+          </Link>
         </Menu.Item>
         <Menu.Item key="add">
-          <Icon type="plus" />
-          Add
+          <Link to="/add">
+            <Icon type="plus" />
+            Add
+          </Link>
         </Menu.Item>
         <Menu.Item key="try">
-          <Icon type="edit" />
-          Try
+          <Link to="/predict">
+            <Icon type="edit" />
+            Try
+          </Link>
         </Menu.Item>
       </Menu>
     );

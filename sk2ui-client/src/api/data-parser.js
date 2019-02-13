@@ -44,3 +44,10 @@ export function getRicoLabels(data) {
   });
   return content;
 }
+
+export function getRicoImages(dataList) {
+  return dataList.map(data => ({
+    alt: `rico id: ${data._id}`,
+    url: `${IMAGE_API}${data._id.$oid}&arg=rico`,
+  }));
+}
