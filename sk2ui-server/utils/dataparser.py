@@ -1,5 +1,7 @@
 import base64
-LABEL_SKETCH_DIR_PATH = '/Users/tonytung/Documents/Sketch2UI/sk2ui-data/temp/'
+import os
+current_path = os.path.abspath(os.path.dirname(__file__))
+LABEL_SKETCH_DIR_PATH = os.path.join(current_path, '../../sk2ui-data/temp/')
 
 def getImageData(dataStr):
     imgdata = base64.decodestring(dataStr)
