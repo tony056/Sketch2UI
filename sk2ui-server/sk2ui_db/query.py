@@ -11,11 +11,13 @@ def queryByName(name):
 def queryById(id):
     return Sk2uiData.objects(id=id).to_json()
 
+def queryByLabel(label, limit):
+    return Sk2uiData.objects(__raw__={ label: { '$size': 1 } })[:limit].to_json()
+
 def fetchImageByDataId(dataId, arg):
-    print(dataId)
     if arg == 'rico':
         return Sk2uiData.objects(id=dataId).first().rico_image_file.read(), 'image/jpeg'
     elif arg == 'anno':
         return Sk2uiData.objects(id=dataId).first().rico_anno_image_file.read(), 'image/png'
 
-__all__ = ['queryAll', 'queryByName', 'queryById', 'fetchImageByDataId']
+__all__ = ['queryAll', 'queryByName', 'queryById', 'fetchImageByDataId', 'queryByLabel', ]

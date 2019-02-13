@@ -21,7 +21,9 @@ def create_app():
         if request.method == 'GET':
             queryName = request.args.get('name')
             queryId = request.args.get('id')
-            if not queryName and not queryId:
+            queryLabel = request.args.get('ricolabel')
+            limit = int(request.args.get('limit'))
+            if len(request.args) == 0:
                 print('fetch all')
                 results = queryAll()
                 return jsonify(results)
@@ -31,6 +33,9 @@ def create_app():
                     result = queryByName(queryName)
                 elif queryId:
                     result = queryById(queryId)
+                elif queryLabel:
+                    result = queryByLabel(queryLabel, limit)
+                print(result)
                 return jsonify(result)
 
     @app.route('/api/images', methods=['GET'])
@@ -42,9 +47,20 @@ def create_app():
         return content
 
 
-    @app.route('/api/classes', methods=['GET'])
+    @app.route('/api/fetch', methods=['GET'])
     def getClasses():
-        return
+        arg = request.args.get('arg')
+        type = request.args.get('type')
+        result = {}
+        if arg == 'label' and type == 'rico':
+            result = getRicoLabels()
+        return jsonify(result)
+
+    @app.route('/api/add/labelsketch', methods=['POST'])
+    def addLabelSketch():
+        content = request.json
+        createLabelSketch(content['label'], content['name'], content['image'])
+        return 'OK'
 
     return app
 
